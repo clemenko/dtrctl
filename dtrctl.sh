@@ -69,14 +69,14 @@ echo -n " getting an auth token "
  echo "$GREEN" "[ok]" "$NORMAL"
 
 #create teams and adding users
- echo -n " creating teams "
+ echo -n " creating teams and adding users "
 for ORG in $(cat INFO/orgList); do
   if [ -f INFO/teams_$ORG ]; then
     for TEAM in $(cat INFO/teams_$ORG); do 
       curl -skX POST https://$DST_UCP_URL/accounts/$ORG/teams -H "Authorization: Bearer $token" -H 'Accept: application/json, text/plain, */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Content-Type: application/json;charset=utf-8' -d '{ "description": "'$TEAM'", "name": "'$TEAM'"}'  > /dev/null 2>&1
       if [ -f INFO/members_$ORG"ZZZ"$TEAM ]; then
        for USER in $(cat INFO/members_$ORG"ZZZ"$TEAM); do
-         curl -skX PUT https://$DST_UCP_URL/accounts/$ORG/teams/$TEAM/members/$USER -H  "accept: application/json" -H  "Authorization: Bearer $token" -H  "content-type: application/json" -d '{}'
+         curl -skX PUT https://$DST_UCP_URL/accounts/$ORG/teams/$TEAM/members/$USER -H  "accept: application/json" -H  "Authorization: Bearer $token" -H  "content-type: application/json" -d '{}' > /dev/null 2>&1
        done
       fi
     done
